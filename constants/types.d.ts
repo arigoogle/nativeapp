@@ -35,3 +35,23 @@ export type CustomButtonProps = {
   isLoading?: boolean;
 
 }
+// New types for SignIn component and FormField
+export type SignInFormState = {
+  email: string;
+  password: string;
+};
+
+export type SignUpFormState = {
+  username: string;
+  email: string;
+  password: string;
+};
+
+export type FormFieldProps = {
+  title: string;
+  value: string;
+  placeholder?: string;
+  handleChangeText: (text: string) => void;
+  otherStyles?: string;
+  keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad' | 'password';
+};

@@ -1,12 +1,80 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react';
+import { Image, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { images } from '@/constants';
+import FormField from '@/components/FormField';
+import CustomButton from '@/components/CustomButton';
+import { Link } from 'expo-router';
+import { SignUpFormState } from '@/constants/types';
 
 const SignUp = () => {
-  return (
-    <View>
-      <Text>SignUp</Text>
-    </View>
-  )
-}
+  const [form, setForm] = useState<SignUpFormState>({
+    username:'',
+    email: '',
+    password: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-export default SignUp
+  const handleFormChange = (field: keyof SignUpFormState) => (value: string) => {
+    setForm(prevForm => ({ ...prevForm, [field]: value }));
+  };
+
+  const onSubmit = () => {
+
+  }
+
+  return (
+    <SafeAreaView className='bg-primary h-full'>
+      <ScrollView>
+        <View className='w-full justify-center min-h-[83vh] px-4 my-6'>
+          <Image
+            source={images.logo}
+            resizeMode='contain'
+            className='w-[115px] h-[35px]'
+          />
+
+          <Text className='text-2xl text-white text-semibold font-psemibold mt-10'>
+            Sign Up to Oyen
+          </Text>
+          
+          <FormField
+            title='Username'
+            value={form.username}
+            handleChangeText={handleFormChange('username')}
+            otherStyles='mt-7'
+          />
+
+          <FormField
+            title='Email'
+            value={form.email}
+            handleChangeText={handleFormChange('email')}
+            otherStyles='mt-7'
+            keyboardType='email-address'
+          />
+
+          <FormField
+            title='Password'
+            value={form.password}
+            handleChangeText={handleFormChange('password')}
+            otherStyles='mt-7'
+            keyboardType='password'
+          />
+
+          <CustomButton
+            title='Sign Up'
+            handlePress={onSubmit}
+            containerStyles='mt-7'
+            isLoading={isSubmitting}
+          />
+
+          <View className='justify-center pt-5 flex-row gap-2'>
+            <Text className='text-lg text-gray-100 font-pregular'>Have an accoutn already</Text>
+            <Link href="/sign-in" className='text-lg font-psemibold text-secondary'>Sign In</Link>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default SignUp;
