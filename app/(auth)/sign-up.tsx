@@ -1,27 +1,45 @@
 import React, { useState } from 'react';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '@/constants';
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { SignUpFormState } from '@/constants/types';
+import { createUser } from '@/lib/appwrite';
 
 const SignUp = () => {
   const [form, setForm] = useState<SignUpFormState>({
-    username:'',
+    username: '',
     email: '',
     password: '',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleFormChange = (field: keyof SignUpFormState) => (value: string) => {
-    setForm(prevForm => ({ ...prevForm, [field]: value }));
+  const handleFormChange =
+    (field: keyof SignUpFormState) => (value: string) => {
+      setForm((prevForm) => ({ ...prevForm, [field]: value }));
+    };
+
+  const onSubmit = async () => {
+    if (!form.username || !form.email || !form.password) {
+      Alert.alert('Error', 'Please fill in all the fields');
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await createUser(form.email, form.password, form.username );
+
+      // set it to global state
+
+      router.replace('/home')
+    } catch (error: any) {
+      Alert.alert('Error', error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-
-  const onSubmit = () => {
-
-  }
 
   return (
     <SafeAreaView className='bg-primary h-full'>
@@ -36,7 +54,7 @@ const SignUp = () => {
           <Text className='text-2xl text-white text-semibold font-psemibold mt-10'>
             Sign Up to Oyen
           </Text>
-          
+
           <FormField
             title='Username'
             value={form.username}
@@ -68,8 +86,15 @@ const SignUp = () => {
           />
 
           <View className='justify-center pt-5 flex-row gap-2'>
-            <Text className='text-lg text-gray-100 font-pregular'>Have an accoutn already</Text>
-            <Link href="/sign-in" className='text-lg font-psemibold text-secondary'>Sign In</Link>
+            <Text className='text-lg text-gray-100 font-pregular'>
+              Have an accoutn already
+            </Text>
+            <Link
+              href='/sign-in'
+              className='text-lg font-psemibold text-secondary'
+            >
+              Sign In
+            </Link>
           </View>
         </View>
       </ScrollView>
