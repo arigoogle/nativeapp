@@ -48,10 +48,20 @@ export type SignUpFormState = {
 };
 
 export type FormFieldProps = {
-  title: string;
-  value: string;
+  title?: string;
+  value?: string;
   placeholder?: string;
-  handleChangeText: (text: string) => void;
+  handleChangeText?: (text: string) => void;
   otherStyles?: string;
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad' | 'password';
 };
+
+export type TrendingProps = {
+  posts: { id: number }[]; 
+  id?: any;
+}
+
+export type EmptyStateProps ={
+  title?: string;
+  subtitle?: string;
+}

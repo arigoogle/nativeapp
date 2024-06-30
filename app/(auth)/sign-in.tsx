@@ -15,7 +15,7 @@ const SignIn = () => {
     email: '',
     password: '',
   });
-  const { setUser, setIsLogged } = useGlobalContext();
+  const { setUser, setIsLoggedIn } = useGlobalContext();
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -33,7 +33,7 @@ const SignIn = () => {
     try {
       const result = await signIn(form.email, form.password);
       setUser(result);
-      setIsLogged(true);
+      setIsLoggedIn(true);
       // set it to global state
       // console.log('result', result)
       Alert.alert("Success", "User signed in successfully");
