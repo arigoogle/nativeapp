@@ -7,8 +7,10 @@ import CustomButton from '@/components/CustomButton';
 import { Link, router } from 'expo-router';
 import { SignUpFormState } from '@/constants/types';
 import { createUser } from '@/lib/appwrite';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const SignUp = () => {
+  const { setUser, setIsLogged } = useGlobalContext();
   const [form, setForm] = useState<SignUpFormState>({
     username: '',
     email: '',
@@ -30,7 +32,8 @@ const SignUp = () => {
 
     try {
       const result = await createUser(form.email, form.password, form.username );
-
+      setUser(result);
+      setIsLogged(true);
       // set it to global state
 
       router.replace('/home')
