@@ -65,3 +65,15 @@ export type EmptyStateProps ={
   title?: string;
   subtitle?: string;
 }
+
+export type VideoCardProps = {
+  video?: {
+    title: string;
+    thumbnail: any;
+    video: string;
+    creator: {
+      username: string;
+      avatar: string;
+    }
+  }
+}
